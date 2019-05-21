@@ -68,7 +68,7 @@ ex) ```3=```: Load only plane 3
  - ```0```: Select all planes
  - ```1```, ```2```, ```3```, ```4```, ```5```, ```6```: Select specific plane
 Available Commands With extended input
- - ```*```
- - ```=```
- - ```X```: Only 3,4,5 plane
- - ```C```
+   - ```*```
+   - ```=```
+   - ```X```: Only 3,4,5 plane
+   - ```C```
