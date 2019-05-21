@@ -9,6 +9,9 @@ Imagine a 3x3x3 Rubik's CUBE. Also, imagine there's number on every square that 
 
 ## Cube twisting
 You can twist cube to move value
+
+<img src="https://github.com/r3coder/cube/blob/master/img/img_rotation.png" width="400">
+
 ex) ``LR'FFBBLR'DD```: Move value from plane 2 to plane 5
 
 ## Data structure
