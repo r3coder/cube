@@ -9,13 +9,16 @@ Imagine a 3x3x3 Rubik's CUBE. Also, imagine there's number on every square that 
 
 ## Cube twisting
 You can twist cube to move value
+
+<img src="https://github.com/r3coder/cube/blob/master/img/img_rotation.png" width="400">
+
 ex) ``LR'FFBBLR'DD```: Move value from plane 2 to plane 5
 
 ## Data structure
 Each CUBE has total of 55 (6x9+1) data spaces.
  - ***Data Cell***(6 x 8-bit): Data cells are cell that is placed on center of each plane. Each cell can hold 8-bit data, and each cell is unique. Number in parenthesis indicates location of each cell if it is placed on normal d6.
-   - ***Input Cell***(2): 
-   - ***Output Cell***(5): 
+   - ***Input Cell***(2): Any Input number is loaded on this cell.
+   - ***Output Cell***(5): If user executes print, then print ascii from this cell.
    - ***Static 1 Cell***(1): This only cell is always fixed to 1. You can't change the value of this cell with any kind of operations.
    - ***NOT Cell***(6): Operates at when **Execute** Command executed. Computes bit-wise NOT between saved data in itself and Bit cells, and place result at itself.
    - ***OR Cell***(3): Operates at when **Execute** Command executed. Computes bit-wise OR between saved data in itself and Bit cells, and place result at itself.
@@ -68,7 +71,7 @@ ex) ```3=```: Load only plane 3
  - ```0```: Select all planes
  - ```1```, ```2```, ```3```, ```4```, ```5```, ```6```: Select specific plane
 Available Commands With extended input
- - ```*```
- - ```=```
- - ```X```: Only 3,4,5 plane
- - ```C```
+   - ```*```
+   - ```=```
+   - ```X```: Only 3,4,5 plane
+   - ```C```
