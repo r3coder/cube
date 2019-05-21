@@ -1,5 +1,7 @@
 import numpy as np
 
+CUBE_TXT = ["I","0","|","&","~","O"]
+
 class Cube:
     def __init__(self):
         self.hyper_in  = None
@@ -11,16 +13,17 @@ class Cube:
         self.static_one()
 
     def pl(self, idx):
-        return [ "%3d%3d%3d"%(self.cell_bit[idx,6],self.cell_bit[idx,7],self.cell_bit[idx,0])
-                ,"%3d%3d%3d"%(self.cell_bit[idx,5],self.cell_data[idx]  ,self.cell_bit[idx,1])
-                ,"%3d%3d%3d"%(self.cell_bit[idx,4],self.cell_bit[idx,3],self.cell_bit[idx,2])]
+        return [ " %s %3d%3d%3d"%(CUBE_TXT[idx],self.cell_bit[idx,6],self.cell_bit[idx,7],self.cell_bit[idx,0])
+                ," | %3d%3d%3d"%(self.cell_bit[idx,5],self.cell_data[idx]  ,self.cell_bit[idx,1])
+                ," | %3d%3d%3d"%(self.cell_bit[idx,4],self.cell_bit[idx,3],self.cell_bit[idx,2])]
     def show(self):
+        print("Core Cell: %d"%self.cell_core)
         for i in range(3):
-            print(" "*9+self.pl(0)[i])
+            print(" "*12+self.pl(0)[i])
         for i in range(3):
             print(self.pl(3)[i]+self.pl(1)[i]+self.pl(2)[i]+self.pl(4)[i])
         for i in range(3):
-            print(" "*9+self.pl(5)[i])
+            print(" "*12+self.pl(5)[i])
         print()
 
     def make_num(self, p): # make binary number
@@ -127,6 +130,7 @@ class Cube:
 
 CONFIG_DEBUG = 2
 CONFIG_CUBE = False
+CONFIG_STEP = False
 
 c_list = list()
 rot_list = ["U", "D", "L", "R", "F", "B", "u", "d", "l", "r", "f", "b", "M", "S", "E"]
@@ -152,7 +156,7 @@ if __name__ == "__main__":
     str_input = ""
     # str_input = "I*LR'FFBBLR'DD=P" # Basic input to output
     # str_input = "*R=[{}]}{" # Basic hypercube example
-    str_input = "I!(-U)R'RR"
+    str_input = "*RU=!(-U)R'RR" # Basic if statement
     print("Script Loaded Length %d"%len(str_input))
     printd(str_input)
     str_index = 0
@@ -217,7 +221,7 @@ if __name__ == "__main__":
                 printd("%s If close, Core Cell is Zero"%s)
                 # par_stack.append(str_index+1)
         elif s == "!": printd("%s: Core <- Input"%s); c.cell_core = c.cell_data[0]
-        elif s == "_": printd("%s: Core -1"%s); c.cell_core -= 1
+        elif s == "-": printd("%s: Core -1"%s); c.cell_core -= 1
         elif s == "+": printd("%s: Core +1"%s); c.cell_core += 1
         elif s == "[":
             printd("%s: Move to inner Hypercube From %s"%(s,str(c)))
@@ -246,6 +250,8 @@ if __name__ == "__main__":
             # print("%s << %s << %s"%(str(i.hyper_in),str(i),str(i.hyper_out)))
         if CONFIG_CUBE:
             c.show()
+        if CONFIG_STEP:
+            input()
         str_index += 1
 
     # for i in range(6):
