@@ -39,6 +39,7 @@ Still, we can only access 1 CUBE each time, so you have to move to other CUBE if
 Basically, it is same as basic cube rotating characters
  - ```U / U' / D / D' / L / L' / R / R' / B / B' / F / F'```: Turn a CUBE at corresponding direction.
  - ```u / u' / d / d' / l / l' / r / r' / b / b' / f / f' / M / M' / S / S' / E / E'```: Turn a CUBE at corresponding direction, still CUBE's center is fixed, so these are somewhat depreciated on this compiler.
+ For users that can't type ```'```, ```.``` is also possible
  
 ## I/O and Operations
  - ```I```: Input value and put to the Input cell.
