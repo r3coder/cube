@@ -1,5 +1,11 @@
 # CUBE
 CUBE is a esoteric programming language (esolang) that uses rubik's cube's structure as data structure. CUBE is Turing complete since it uses hypercubes.
+# Dependencies
+You need to install numpy to execute CUBE
+# Executing example
+ - ```python3 cube_compiler.py -s examples/hello_world.cube``` to execute hello, world.
+ - ```python3 cube_compiler.py -s examples/hello_world.cube -d 2``` to see what happened while code is executing.
+ - ```python3 cube_compiler.py -s examples/hello_world.cube -d 2 -c True``` to see what happened while code is executing, and what's cube shaped like.
 
 # Basic explaination
 Imagine a 3x3x3 Rubik's CUBE. Also, imagine there's number on every square that you look. If you twist the cube, then you can move numbers to other plane. This is how CUBE handles most of operations.
@@ -39,7 +45,6 @@ Still, we can only access 1 CUBE each time, so you have to move to other CUBE if
 Basically, it is same as basic cube rotating characters
  - ```U / U' / D / D' / L / L' / R / R' / B / B' / F / F'```: Turn a CUBE at corresponding direction.
  - ```u / u' / d / d' / l / l' / r / r' / b / b' / f / f' / M / M' / S / S' / E / E'```: Turn a CUBE at corresponding direction, still CUBE's center is fixed, so these are somewhat depreciated on this compiler.
- For users that can't type ```'```, ```.``` is also possible
  
 ## I/O and Operations
  - ```I```: Input value and put to the Input cell.
@@ -77,7 +82,10 @@ Available Commands With extended input
    - ```C```
 
 # Files and usage
- - compiler.py: CUBE Compiler
+ - cube.py: CUBE and CUBES Class implementation
+ - cube_compiler.py: CUBE Compiler
+ - command_finder.py: Find shortest command to make specific plane has specific value
  - examples/: Examples
- - basic_if.cube: Basic if statement
+   - hello_world.cube: Print ("Hello, world!")
+   - basic_if.cube: Basic if statement
  - README.md: This file
