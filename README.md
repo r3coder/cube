@@ -1,5 +1,11 @@
 # CUBE
 CUBE is a esoteric programming language (esolang) that uses rubik's cube's structure as data structure. CUBE is Turing complete since it uses hypercubes.
+# Dependencies
+You need to install numpy to execute CUBE
+# Executing example
+ - ```python3 cube_compiler.py -s examples/hello_world.cube``` to execute hello, world.
+ - ```python3 cube_compiler.py -s examples/hello_world.cube -d 2``` to see what happened while code is executing.
+ - ```python3 cube_compiler.py -s examples/hello_world.cube -d 2 -c True``` to see what happened while code is executing, and what's cube shaped like.
 
 # Basic explaination
 Imagine a 3x3x3 Rubik's CUBE. Also, imagine there's number on every square that you look. If you twist the cube, then you can move numbers to other plane. This is how CUBE handles most of operations.
