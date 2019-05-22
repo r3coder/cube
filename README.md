@@ -1,9 +1,6 @@
 # CUBE
 CUBE is a esoteric programming language (esolang) that uses rubik's cube's structure as data structure. CUBE is Turing complete since it uses hypercubes.
 
-# Files and usage
- - main.py : CUBE Compiler
-
 # Basic explaination
 Imagine a 3x3x3 Rubik's CUBE. Also, imagine there's number on every square that you look. If you twist the cube, then you can move numbers to other plane. This is how CUBE handles most of operations.
 
@@ -56,8 +53,10 @@ Basically, it is same as basic cube rotating characters
  - ```)```: If the Core cell's value is same as 0, execute next charater, else, find matching```(```and execute next character.
  
  - ```!```: Set Input cell's value to the Core cell.
- - ```-```: Subtract Static 1 cell's value(Actually 1) of the Core cell. (Possibility to Removed)
- - ```+```: Add Static 1 cell's value(Actually 1) of the Core cell. (Possibility to Removed)
+ - ```+```: Add Input cell's value to the Core cell.
+ - ```-```: Subtract Input cell's value to the Core cell.
+ - ```m```: Subtract Static 1 cell's value(Actually 1) of the Core cell. (Possibility to Removed)
+ - ```p```: Add Static 1 cell's value(Actually 1) of the Core cell. (Possibility to Removed)
 
 ## HyperCube
  - ```{```: Send All 6 Data Cells' data to inner cube's Data Cells.
@@ -75,3 +74,9 @@ Available Commands With extended input
    - ```=```
    - ```X```: Only 3,4,5 plane
    - ```C```
+
+# Files and usage
+ - compiler.py: CUBE Compiler
+ - examples/: Examples
+ - basic_if.cube: Basic if statement
+ - README.md: This file
