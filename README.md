@@ -11,14 +11,17 @@ You need to install numpy to execute CUBE
 Imagine a 3x3x3 Rubik's CUBE. Also, imagine there's number on every square that you look. If you twist the cube, then you can move numbers to other plane. This is how CUBE handles most of operations.
 
 ## Cube twisting
-You can twist cube to move value
+You can twist cube to move value like this image
 
 <img src="https://github.com/r3coder/cube/blob/master/img/img_rotation.png" width="400">
 
-ex) ``LR'FFBBLR'DD```: Move value from plane 2 to plane 5
+ex) ```LR'FFBBLR'DD```: Move value from plane 2 to plane 5
 
 ## Data structure
 Each CUBE has total of 55 (6x9+1) data spaces.
+
+<img src="https://github.com/r3coder/cube/blob/master/img/img_structure.png" width="400">
+
  - ***Data Cell***(6 x 8-bit): Data cells are cell that is placed on center of each plane. Each cell can hold 8-bit data, and each cell is unique. Number in parenthesis indicates location of each cell if it is placed on normal d6.
    - ***Input Cell***(2): Any Input number is loaded on this cell.
    - ***Output Cell***(5): If user executes print, then print ascii from this cell.
@@ -29,9 +32,22 @@ Each CUBE has total of 55 (6x9+1) data spaces.
  - ***Bit Cell***(48 x 1-bit): Around the each data cell, there is 8 bit cells on each plane. These cells are movable with twisting the cube.
  - ***Core Cell***(1 x 32-bit): The Core cell is one very special cell that isn't visible outside. It can hold 32-bit data, and you can only add or subtract to this cell using Input cell. More explanation is described down below.
 
+## Loading and Saving data between Cells
+You can transfer data between Data Cells and Bit Cells.
+
+When you execute load, value on the Data Cell spreads to Bit Cells. Clockwise, each position is indicates each bit position.
+<img src="https://github.com/r3coder/cube/blob/master/img/img_load.png" width="400">
+
+Save is similar, you can transfer data from Bit Cells to the corresponding Data Cell.
+<img src="https://github.com/r3coder/cube/blob/master/img/img_save.png" width="400">
+
+Load, save happens on all planes simultaneously.
+<img src="https://github.com/r3coder/cube/blob/master/img/img_load_cube.png" width="400">
+
+
 ## Core Cell
 This cell acts as 32-bit register, that can only check if it is zero using ```(``` and ```)```. You can put values from Input using ```!```(and +1 / -1 for ```+``` and ```-```). You can't pull out value from this cell.
- 
+
 # Hypercube
 Hypercube is very special concept that make CUBE is complete turing machine. We suppose that there is CUBE inside CUBE, and CUBE outside CUBE for 4-th dimension direction.
 You can shift using ```[``` and ```]```, then you can move to inner cube or outer cube.
@@ -45,7 +61,7 @@ Still, we can only access 1 CUBE each time, so you have to move to other CUBE if
 Basically, it is same as basic cube rotating characters
  - ```U / U' / D / D' / L / L' / R / R' / B / B' / F / F'```: Turn a CUBE at corresponding direction.
  - ```u / u' / d / d' / l / l' / r / r' / b / b' / f / f' / M / M' / S / S' / E / E'```: Turn a CUBE at corresponding direction, still CUBE's center is fixed, so these are somewhat depreciated on this compiler.
- 
+
 ## I/O and Operations
  - ```I```: Input value and put to the Input cell.
  - ```P```: Print from the Output Cell as ascii.
@@ -53,11 +69,11 @@ Basically, it is same as basic cube rotating characters
  - ```=```: Save Bit cells' data to Data cells, but Static Cell remains to 1.
  - ```X```: Execute commands(AND, OR, NOT) in each planes and store result in Data cells.
  - ```C```: Clear all Data cells' data to 0, but Static Cell remains to 1.
- 
+
 ## Core Cells
  - ```(```: If the Core cell's value is same as 0, find matching ```)``` and execute next character of matching ```)```. Else, execute next character.
  - ```)```: If the Core cell's value is same as 0, execute next charater, else, find matching```(```and execute next character.
- 
+
  - ```!```: Set Input cell's value to the Core cell.
  - ```+```: Add Input cell's value to the Core cell.
  - ```-```: Subtract Input cell's value to the Core cell.
