@@ -36,12 +36,15 @@ Each CUBE has total of 55 (6x9+1) data spaces.
 You can transfer data between Data Cells and Bit Cells.
 
 When you execute load, value on the Data Cell spreads to Bit Cells. Clockwise, each position is indicates each bit position.
+
 <img src="https://github.com/r3coder/cube/blob/master/img/img_load.png" width="400">
 
 Save is similar, you can transfer data from Bit Cells to the corresponding Data Cell.
+
 <img src="https://github.com/r3coder/cube/blob/master/img/img_save.png" width="400">
 
 Load, save happens on all planes simultaneously.
+
 <img src="https://github.com/r3coder/cube/blob/master/img/img_load_cube.png" width="400">
 
 
