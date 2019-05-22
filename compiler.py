@@ -1,4 +1,6 @@
+
 import numpy as np
+import argparse
 
 CUBE_TXT = ["I","0","|","&","~","O"]
 
@@ -128,16 +130,34 @@ class Cube:
         for ind in range(3): self.cell_bit[pp[2],pi[2][ind]] = self.cell_bit[pp[3],pi[3][ind]]
         for ind in range(3): self.cell_bit[pp[3],pi[3][ind]] = t[ind]
 
-CONFIG_DEBUG = 2
-CONFIG_CUBE = False
-CONFIG_STEP = False
+parser = argparse.ArgumentParser()
+parser.add_argument("-d","--debug", type=int, choices=[0,1,2], default=1,
+        help = "Change Debug level")
+parser.add_argument("-c","--cube", type=bool, default=False,
+        help = "Show cube at every step")
+parser.add_argument("-t","--step", type=bool, default=False,
+        help = "Set true to pause at every step")
+parser.add_argument("-s","--script", type=str, default = "",
+        help = "Input script's directory")
+parser.add_argument("-z","--demo", type=int, default=-1,
+        help = "Show demo")
+
+args = parser.parse_args()
+ 
+CONFIG_DEBUG = args.debug
+CONFIG_CUBE = args.cube
+CONFIG_STEP = args.step
+CONFIG_INPUT_FILE = args.script
+CONFIG_DEMO = args.demo
 
 c_list = list()
 rot_list = ["U", "D", "L", "R", "F", "B", "u", "d", "l", "r", "f", "b", "M", "S", "E"]
 ind_list = ["0", "1", "2", "3", "4", "5", "6"]
 
-def printd(s, m = 0):
-    if CONFIG_DEBUG >= 0:
+def printd(s, m = 1):
+    if CONFIG_DEBUG == 0:
+        return None
+    if CONFIG_DEBUG >= m:
         print(s)
 
 def create_cube(c, d = "in"):
@@ -154,10 +174,23 @@ def create_cube(c, d = "in"):
 
 if __name__ == "__main__":
     str_input = ""
-    # str_input = "I*LR'FFBBLR'DD=P" # Basic input to output
-    # str_input = "*R=[{}]}{" # Basic hypercube example
-    str_input = "*RU=!(-U)R'RR" # Basic if statement
-    print("Script Loaded Length %d"%len(str_input))
+    if CONFIG_INPUT_FILE != "":
+        printd("Reading From File: %s"%CONFIG_INPUT_FILE)
+        f = open(CONFIG_INPUT_FILE,"r")
+        str_input = f.read()
+        f.close()
+    else:
+        if CONFIG_DEMO < 0:
+            printd("Input your script")
+            str_input = input()
+        elif CONFIG_DEMO == 0:
+            printd("Basic Sending data from plane 2 to 5")
+            str_input = "I*LR'FFBBLR'DD=P" # Basic input to output
+        elif CONFIG_DEMO == 1:
+            printd("Basic Hypercube Test")
+            str_input = "*R=[{}]}{" # Basic hypercube example
+
+    printd("Script Loaded with Length %d"%len(str_input))
     printd(str_input)
     str_index = 0
     par_stack = list()
@@ -168,32 +201,33 @@ if __name__ == "__main__":
         s = str_input[str_index]
         if s in rot_list:
             if str_index+1 < len(str_input) and str_input[str_index+1] == "'":
-                printd("%s: Rotate"%str_input[str_index:str_index+2])
+                printd("%s: Rotate"%str_input[str_index:str_index+2],2)
                 c.rotate(str_input[str_index:str_index+2])
                 str_index += 1
             else:
-                printd("%s: Rotate"%s)
+                printd("%s: Rotate"%s,2)
                 c.rotate(s)
         elif s in ind_list:
-            printd("%s Number inputed"%s) # Still making
+            printd("%s Number inputed"%s,2) # Still making
         elif s == "I":
+            print(" >> ",end="")
             a = input()
-            printd("%s: Input:%s"%(s,a[0]))
+            printd("%s: Input:%s"%(s,a[0]),2)
             c.input(ord(a[0]))
         elif s == "P":
-            printd("%s: Output"%s)
+            printd("%s: Output"%s,2)
             print(chr(c.output()),end="")
             printd("")
-        elif s == "X": printd("%s: Execute"%s); c.execute()
-        elif s == "*": printd("%s: Load"%s); c.load()
-        elif s == "=": printd("%s: Save"%s); c.save()
-        elif s == "C": printd("%s: Clear"%s); c.clear()
+        elif s == "X": printd("%s: Execute"%s,2); c.execute()
+        elif s == "*": printd("%s: Load"%s,2); c.load()
+        elif s == "=": printd("%s: Save"%s,2); c.save()
+        elif s == "C": printd("%s: Clear"%s,2); c.clear()
         elif s == "(":
             if c.cell_core != 0:
-                printd("%s: If open, Core Cell is Not Zero:%d"%(s,c.cell_core))
+                printd("%s: If open, Core Cell is Not Zero:%d"%(s,c.cell_core),2)
                 # par_stack.append(str_index+1)
             else:
-                printd("%s: If open, Core Cell is Zero"%s)
+                printd("%s: If open, Core Cell is Zero"%s,2)
                 loc = str_index+1
                 level = 0
                 # Need to converted into stack... for awesomeness
@@ -206,7 +240,7 @@ if __name__ == "__main__":
                 str_index = loc
         elif s == ")":
             if c.cell_core != 0:
-                printd("%s: If close, Core Cell is Not Zero:%d"%(s,c.cell_core))
+                printd("%s: If close, Core Cell is Not Zero:%d"%(s,c.cell_core),2)
                 loc = str_index-1
                 level = 0
                 # Need to converted into stack... for awesomeness
@@ -218,33 +252,35 @@ if __name__ == "__main__":
                     loc -= 1
                 str_index = loc
             else:
-                printd("%s If close, Core Cell is Zero"%s)
+                printd("%s If close, Core Cell is Zero"%s,2)
                 # par_stack.append(str_index+1)
-        elif s == "!": printd("%s: Core <- Input"%s); c.cell_core = c.cell_data[0]
-        elif s == "-": printd("%s: Core -1"%s); c.cell_core -= 1
-        elif s == "+": printd("%s: Core +1"%s); c.cell_core += 1
+        elif s == "!": printd("%s: Core <- Input"%s,2); c.cell_core = c.cell_data[0]
+        elif s == "-": printd("%s: Core -= Input"%s,2); c.cell_core -= c.cell_data[0]
+        elif s == "+": printd("%s: Core += Input"%s,2); c.cell_core += c.cell_data[0]
+        elif s == "m": printd("%s: Core - 1"%s,2); c.cell_core -= 1
+        elif s == "p": printd("%s: Core + 1"%s,2); c.cell_core += 1
         elif s == "[":
-            printd("%s: Move to inner Hypercube From %s"%(s,str(c)))
+            printd("%s: Move to inner Hypercube From %s"%(s,str(c)),2)
             if c.hyper_in == None: new_c = create_cube(c, "in")
             else: new_c = c.hyper_in
             c = new_c
         elif s == "]":
-            printd("%s: Move to outer Hypercube From %s"%(s,str(c)))
+            printd("%s: Move to outer Hypercube From %s"%(s,str(c)),2)
             if c.hyper_out == None: new_c = create_cube(c, "out")
             else: new_c = c.hyper_out
             c = new_c
         elif s == "{":
-            printd("%s: Send data to inner Hypercube"%s)
+            printd("%s: Send data to inner Hypercube"%s,2)
             if c.hyper_in == None: new_c = create_cube(c, "in")
             for i in range(6):
                 new_c.cell_data[i] = c.cell_data[i]
         elif s == "}":
-            printd("%s: Send data to outer Hypercube"%s)
+            printd("%s: Send data to outer Hypercube"%s,2)
             if c.hyper_out == None: new_c = create_cube(c, "out")
             for i in range(6):
                 new_c.cell_data[i] = c.cell_data[i]
         else:
-            printd("%s: Unrecognized Character",s)
+            printd("%s: Unrecognized Character"%s,2)
             pass
         # for i in c_list:
             # print("%s << %s << %s"%(str(i.hyper_in),str(i),str(i.hyper_out)))
