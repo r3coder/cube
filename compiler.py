@@ -107,13 +107,13 @@ class Cube:
             else: return None
         elif p==1 or p==4:
             if p == 4: p = 1; l = 0 if l == 2 else 2; d = 0 if d == 1 else 1
-            if   d == 0 and l == 0:
+            if   d == 1 and l == 0:
                 pp = [0, 2, 5, 3]; pi = [[2, 3, 4], [4, 5, 6], [6, 7, 0], [0, 1, 2]]
-            elif d == 0 and l == 2:
-                pp = [0, 2, 5, 3]; pi = [[6, 7, 0], [0, 1, 2], [2, 3, 4], [4, 5, 6]]
-            elif d == 1 and l == 0:
-                pp = [0, 3, 5, 2]; pi = [[2, 3, 4], [0, 1, 2], [6, 7, 0], [4, 5, 6]]
             elif d == 1 and l == 2:
+                pp = [0, 2, 5, 3]; pi = [[6, 7, 0], [0, 1, 2], [2, 3, 4], [4, 5, 6]]
+            elif d == 0 and l == 0:
+                pp = [0, 3, 5, 2]; pi = [[2, 3, 4], [0, 1, 2], [6, 7, 0], [4, 5, 6]]
+            elif d == 0 and l == 2:
                 pp = [0, 3, 5, 2]; pi = [[6, 7, 0], [4, 5, 6], [2, 3, 4], [0, 1, 2]]
             else: return None
         elif p==2 or p==3:
@@ -200,7 +200,7 @@ if __name__ == "__main__":
     while str_index < len(str_input):
         s = str_input[str_index]
         if s in rot_list:
-            if str_index+1 < len(str_input) and str_input[str_index+1] == "'":
+            if str_index+1 < len(str_input) and str_input[str_index+1] in ["'","."]:
                 printd("%s: Rotate"%str_input[str_index:str_index+2],2)
                 c.rotate(str_input[str_index:str_index+2])
                 str_index += 1
