@@ -46,8 +46,13 @@ class Cube:
 
     def clear(self, p=0):                   # ?C
         if p==0:
-            for i in range(6): self.cell_data[i] = 0
-        else: self.cell_data[p] = 0
+            self.cell_data = np.zeros(6)
+            self.cell_bit = np.zeros((6,8),dtype="uint8")
+            self.cell_core = 0
+        else:
+            self.cell_data[p] = 0
+            for i in range(9):
+                self.cell_bit[p,i]= 0
         self.static_one()
     def save(self, p=0):
         if p==0:                            # ?=

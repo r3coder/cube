@@ -71,7 +71,7 @@ Basically, it is same as basic cube rotating characters
  - ```*```: Load Data cells to Bit cells.
  - ```=```: Save Bit cells' data to Data cells, but Static Cell remains to 1.
  - ```X```: Execute commands(AND, OR, NOT) in each planes and store result in Data cells.
- - ```C```: Clear all Data cells' data to 0, but Static Cell remains to 1.
+ - ```C```: Clear all cell's value to 0. Static Cell remains to 1.
 
 ## Core Cells
  - ```(```: If the Core cell's value is same as 0, find matching ```)``` and execute next character of matching ```)```. Else, execute next character.
