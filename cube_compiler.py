@@ -11,26 +11,23 @@ def str2bool(v):
         raise argparse.ArgumentTypeError("Not Boolean value")
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-d","--debug", type=int, choices=[0,1,2], default=1,
-        help = "Change Debug level")
-parser.add_argument("-c","--cube", type=str2bool, default=False,
-        help = "Show cube at every step")
-parser.add_argument("-t","--step", type=str2bool, default=False,
-        help = "Set true to pause at every step")
+parser.add_argument("-dl","--debug-level", type=int, choices=[0,1,2], default=1,
+        help = "Debug: Change Debug Message Level, 0=Off, 1=Basic, 2=Commands")
+parser.add_argument("-dc","--debug-cube", type=str2bool, default=False,
+        help = "Debug: Show cube at every step True to enable")
+parser.add_argument("-ds","--debug-step", type=str2bool, default=False,
+        help = "Debug: Pause at every step. True to enable")
 parser.add_argument("-s","--script", type=str, default = "",
-        help = "Input script's directory")
-parser.add_argument("-z","--demo", type=int, default=-1,
-        help = "Show demo")
+        help = "Input script's directory. If this is Null, you can input your code")
 parser.add_argument("-a","--ascii", type=str2bool, default=True,
-        help = "Print as ascii")
+        help = "Set true to Print as ascii. False to print at number")
 
 args = parser.parse_args()
 
-CONFIG_DEBUG = args.debug
-CONFIG_CUBE = args.cube
-CONFIG_STEP = args.step
+CONFIG_DEBUG = args.debug_level
+CONFIG_CUBE = args.debug_cube
+CONFIG_STEP = args.debug_step
 CONFIG_INPUT_FILE = args.script
-CONFIG_DEMO = args.demo
 CONFIG_ASCII = args.ascii
 
 c_list = list()
@@ -49,22 +46,14 @@ if __name__ == "__main__":
         str_input = f.read()
         f.close()
     else:
-        if CONFIG_DEMO < 0:
-            printd("Input your script")
-            str_input = input()
-        elif CONFIG_DEMO == 0:
-            printd("Basic Sending data from plane 2 to 5")
-            str_input = "I*LR'FFBBLR'DD=P" # Basic input to output
-        elif CONFIG_DEMO == 1:
-            printd("Basic Hypercube Test")
-            str_input = "*R=[{}]}{" # Basic hypercube example
+        printd("Input your script")
+        str_input = input()
 
     printd("Script Loaded with Length %d"%len(str_input))
     printd(str_input)
     str_index = 0
     par_stack = list()
-    c = Cubes(CONFIG_DEBUG, CONFIG_ASCII, CONFIG_CUBE)
-    print()
+    c = Cubes(CONFIG_DEBUG, CONFIG_ASCII, CONFIG_CUBE, CONFIG_STEP)
     print("*"*50)
     print("%30s"%"Result")
     print("*"*50)
