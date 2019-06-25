@@ -143,7 +143,7 @@ class Cube:
 
 
 class Cubes:
-    def __init__(self, C_DEBUG = 0, C_ASCII = 0, C_CUBE = False):
+    def __init__(self, C_DEBUG = 0, C_ASCII = 0, C_CUBE = False, C_STEP = 0):
         self.cubes = list()
         self.C_DEBUG = C_DEBUG
         self.C_ASCII = C_ASCII
