@@ -5,26 +5,38 @@ CUBE_FACE = ["U", "F", "R", "L", "B", "D"]
 rot_list = ["U", "D", "L", "R", "F", "B", "u", "d", "l", "r", "f", "b", "M", "S", "E"]
 ind_list = ["0", "1", "2", "3", "4", "5", "6"]
 
+# 큐브 하나
 class Cube:
+    # 생성자
     def __init__(self):
+        # 포인터
         self.hyper_in  = None
         self.hyper_out = None
-
+        
+        # 큐브 셀 데이터
         self.cell_data = np.zeros(6,dtype="uint8")
         self.cell_bit  = np.zeros((6,8),dtype="uint8")
         self.cell_core = 0
+        
+        # 기본 설정
         self.static_one()
 
+    # 한 면에 대한 정보 표시
+    # idx: 표시할 면
     def pl(self, idx):
         return [ " %s %3d%3d%3d"%(CUBE_TXT[idx],self.cell_bit[idx,6],self.cell_bit[idx,7],self.cell_bit[idx,0])
                 ," %d %3d%3d%3d"%(idx,self.cell_bit[idx,5],self.cell_data[idx]  ,self.cell_bit[idx,1])
                 ," %s %3d%3d%3d"%(CUBE_FACE[idx],self.cell_bit[idx,4],self.cell_bit[idx,3],self.cell_bit[idx,2])]
+
+    # 모든 면의 정보 표시
     def show(self):
+        # core cell, bit cell 합의 값
         print("Core Cell: %d"%self.cell_core, end="")
         print("Sum of Bit Cell: ",end="")
         for i in range(6):
             print("%3d,"%self.make_num(i),end="")
         print()
+        # 큐브 각 면의 정보
         for i in range(3):
             print(" "*12+self.pl(0)[i])
         for i in range(3):
@@ -33,15 +45,21 @@ class Cube:
             print(" "*12+self.pl(5)[i])
         print()
 
+    # bit cell의 값 계산
     def make_num(self, p): # make binary number
         d = 0
         for ind in range(8): d += self.cell_bit[p,ind] << ind
         return d
+    
+    # data 셀에 값 저장
     def save_plane(self, p):        # Only callable from save
         self.cell_data[p] = 0
         for ind in range(8): self.cell_data[p] += self.cell_bit[p,ind] << ind
+
+    # bit 셀에 값 불러오기
     def load_plane(self, p):        # Only callable from load
         for ind in range(8): self.cell_bit[p,ind] = (self.cell_data[p] >> ind )& 1
+    
     def static_one(self): self.cell_data[1] = 1    # Make One as one
 
     def clear(self, p=0):                   # ?C
@@ -54,6 +72,8 @@ class Cube:
             for i in range(9):
                 self.cell_bit[p,i]= 0
         self.static_one()
+        
+    
     def save(self, p=0):
         if p==0:                            # ?=
             for i in range(6): self.save_plane(i)
@@ -64,9 +84,10 @@ class Cube:
             for i in range(6): self.load_plane(i)
         else: self.load_plane(i)
     def execute(self, p=0):                 # X
-        self.cell_data[2] = self.cell_data[2] & self.make_num(2)
-        self.cell_data[3] = self.cell_data[3] | self.make_num(3)
-        self.cell_data[4] = ~self.make_num(4)
+        self.cell_data[2] = self.cell_data[2] & self.make_num(2) # And 셀
+        self.cell_data[3] = self.cell_data[3] | self.make_num(3) # or 셀
+        self.cell_data[4] = ~self.make_num(4) # not 셀
+    
     def input(self, v): self.cell_data[0] = v      # I
     def output(self): return self.cell_data[5]     # P
     def rotate(self, d): # UDBFLR/U'D'B'F'L'R'/udbflr/u'd'b'f'l'r'/MSE/M'S'E'
